@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../assets/css/styles.css">
-
 <?php
 namespace App\UI;
 require_once '../Authentication/Auth.php';
@@ -16,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($emailInput && $passwordInput) {
         $auth = new Auth();
-        if ($auth->login($emailInput, $passwordInput)) {
-            header("Location: dashboard.php");
-            exit();
+        if ($auth->login($emailInput, $passwordInput)){
+		header("Location: dashboard.php");
+		exit();
         } else {
             $errorMessage = "Incorrect email or password. Please try again.";
         }

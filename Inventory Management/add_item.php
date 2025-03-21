@@ -74,70 +74,7 @@ $result = $conn->query("SELECT * FROM inventory ORDER BY item_id DESC");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Management</title>
-    <style>
-        body {
-            font-family: 'Playfair Display', serif;
-            background-color: #2b1406;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            color: #4B2E1E;
-            text-align: center;
-        }
-        .container {
-            background-color: lightgoldenrodyellow;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 350px;
-        }
-        input {
-            width: 90%; /* Reduced width */
-            padding: 6px;
-            margin: 8px 0;
-            border: 2px solid #D4AF37;
-            border-radius: 5px;
-        }
-        .success { color: green; }
-        .error { color: red; }
-        .inventory-list {
-            margin-top: 20px;
-            width: 100%;
-        }
-
-	button {
-            background-color: #D4AF37;
-            color: #fff;
-            padding: 8px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-        }
-	.back-button {
-            margin-top: 30px;
-            background-color: #D4AF37;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-	   margin-left: 1000PX
-        }
-
-       .logo{
-		width: 7%;
-                height: auto;
-                margin-right: 1000PX;
-	}
-
-    </style>
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
 
