@@ -1,14 +1,12 @@
 <link rel="stylesheet" href="../assets/css/styles.css">
 
 <?php
+namespace App\UI;
+require_once '../Authentication/Auth.php';
 
-require '../src/auth.php';
+use App\Authentication\Auth;
 
-/*if (isLoggedIn()) {
-    header("Location: dashboard.php");
-    exit();
-    dashboard add
-}*/
+session_start();
 
 $errorMessage = '';
 
@@ -17,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwordInput = $_POST['password'];
 
     if ($emailInput && $passwordInput) {
-        if (login($emailInput, $passwordInput)) {
+        $auth = new Auth();
+        if ($auth->login($emailInput, $passwordInput)) {
             header("Location: dashboard.php");
             exit();
         } else {
@@ -27,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessage = "Please ensure both email and password are entered correctly.";
     }
 }
-
-
-/*HTML*/
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
