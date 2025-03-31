@@ -6,11 +6,11 @@ class User{
     private $firstName;
     private $lastName;
     private $password;
-    private $email:
+    private $email;
     private $role;
     private $created_at;
 
-    public fucntion __construct($userID, $firstName, $lastName, $password, $email, $role, $created_at){
+    public function __construct($userID, $firstName, $lastName, $password, $email, $role, $created_at){
         $this->userID = $userID;
         $this->firstName= $firstName;
         $this->lastName = $lastName;
