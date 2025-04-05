@@ -3,10 +3,15 @@
 namespace App\UI;
 
 require_once '../Authentication/Auth.php';
+require_once '../InventoryManagement/InventoryManager.php';
 
 use App\Authentication\Auth;
+use App\InventoryManagement\InventoryManager;
+
 session_start();
+
 $auth = new Auth();
+$inv = new InventoryManager();
 
 // Check if user is logged in
 if (!$auth->isLoggedIn()) {
@@ -18,6 +23,16 @@ if (isset($_GET['logout'])) {
     header("Location: login.php");
     exit();
 }
+
+$renderedContent = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
+    $renderedContent = $inv->handleAction($_POST);
+} elseif (isset($_GET['action']) && $_GET['action'] === 'add') {
+    $renderedContent = $inv->handleAction(['action' => 'add']);
+}
+
+$isAdding = isset($_GET['action']) && $_GET['action'] === 'add';
+
 ?>
 
 
@@ -76,40 +91,49 @@ if (isset($_GET['logout'])) {
         .btn:hover {
             background-color: #a87905;
         }
-	.logo{
-		width: 10%;
+    .logo{
+        width: 10%;
                 height: auto;
                 margin-right: 00PX;
-	}
-	.logout-btn {
-		padding: 10px 25px;
-            	border-radius: 7px;
-		font-size: 15px;
-    		background-color: #8B0000; /* Dark red */
-		margin-left: 700PX;
-	}
+    }
+    .logout-btn {
+        padding: 10px 25px;
+                border-radius: 7px;
+        font-size: 15px;
+            background-color: #8B0000; /* Dark red */
+        margin-left: 700PX;
+    }
 
-	.logout-btn:hover {
-    		background-color: #a52a2a; /* Lighter red on hover */
-	}
+
+    .logout-btn:hover {
+            background-color: #a52a2a; /* Lighter red on hover */
+    }
 </style>
     </head>
 <body>
     <div class="dashboard">
 
-	<!-- Jouture Logo -->
-    <img src="../assets/images/jblogo.jpg" alt="Jouture Logo" class="logo">
-	<a href="?logout=true" class="btn logout-btn">Logout</a>
 
-        <h1>Welcome to Jouture Beauty Inventory</h1>
-        <p>Manage your jewelry collection with ease.</p>
-        <div class="buttons">
-            <a href="add_item.php" class="btn">Add Item</a>
-            <a href="delete_item.php" class="btn">Delete Item</a>
-            <a href="search_item.php" class="btn">Search Item</a>
-            <a href="update_item.php" class="btn">Update Item</a>
-            <a href="view_item.php" class="btn">View Items</a>
-        </div>
+    <!-- Jouture Logo -->
+    <img src="../assets/images/jblogo.jpg" alt="Jouture Logo" class="logo">
+    <?php if ($isAdding): ?>
+    <a href="dashboard.php" class="btn back-btn">← Back</a>
+<?php else: ?>
+    <a href="?logout=true" class="btn logout-btn">Logout</a>
+<?php endif; ?>
+
+    <?php if (!empty($renderedContent)): ?>
+    <?= $renderedContent ?>
+<?php else: ?>
+    <h1>Welcome to Jouture Beauty Inventory</h1>
+    <p>Manage your jewelry collection with ease.</p>
+    <div class="buttons">
+        <a href="?action=add" class="btn">Add Item</a>
+        <a href="delete_item.php" class="btn">Delete Item</a>
+        <a href="search_item.php" class="btn">Search Item</a>
+        <a href="update_item.php" class="btn">Update Item</a>
+        <a href="view_item.php" class="btn">View Items</a>
     </div>
+<?php endif; ?>
 </body>
 </html>

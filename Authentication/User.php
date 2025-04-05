@@ -32,9 +32,23 @@ class User{
         return $this->role;
     }
 
-    public function getEmail(): string{
-        return $this->email;
-    }
+    public static function getByEmail(string $email): ?array {
+        $conn = new \mysqli("localhost", "root", "", "jouture_beauty");
+        if ($conn->connect_error) {
+            return null;
+        }
+    
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+    
+        $stmt->close();
+        $conn->close();
+    
+        return $user ?: null;
+    }    
 
     public function getCreatedAt(): string{
         return $this->created_at;
