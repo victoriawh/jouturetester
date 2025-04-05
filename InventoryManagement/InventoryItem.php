@@ -12,7 +12,7 @@ class InventoryItem{
     private $created_at;
     private $updated_at;
 
-    public function _construct($itemID,$name,$description,$quantity,$price,$created_by,$created_at,$updated_at){
+    public function __construct($itemID, $name, $description, $quantity, $price, $created_by, $created_at, $updated_at){
         $this->itemID=$itemID;
         $this->name=$name;
         $this->description=$description;

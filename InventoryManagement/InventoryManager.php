@@ -28,6 +28,15 @@ class InventoryManager {
                 return $this->add_item();
             }
 
+        case 'delete':
+        
+        case 'search':
+
+        case 'update':
+
+        case 'view':
+            return $this->viewItems();
+
         default:
             return "";
     }
@@ -52,6 +61,9 @@ class InventoryManager {
                 padding: 8px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
+            }
+            h2{
+                text-align: center;
             }
             .back-btn {
                 padding: 10px 25px;
@@ -136,6 +148,106 @@ private function addItem($name, $description, $quantity, $price) {
     $stmt->close();
     return $success;
 }
+
+//View Item function for rendering the content
+private function viewItems() {
+    $created_by = $_SESSION['user_id'] ?? null;
+
+    if (!$created_by) {
+        return "<p class='error'>User not authenticated.</p>";
+    }
+
+    $stmt = $this->conn->prepare("SELECT name, description, quantity, price, created_at FROM inventory WHERE created_by = ?");
+    $stmt->bind_param("i", $created_by);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return "<p>No items found in your inventory.</p>";
+    }
+
+    $html = <<<HTML
+    <style>
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .inventory-table th,
+        .inventory-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .inventory-table th {
+            background-color: #b8860b;
+            color: white;
+        }
+
+        .inventory-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 80px;
+            height: auto;
+        }
+
+        .back-btn{
+            padding: 10px 25px;
+            border-radius: 7px;
+            margin-left: 600px;
+            font-size: 15px;
+            background-color: #b8860b;
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #a87905;
+        }
+
+        .logout-btn {
+            background-color: #8B0000;
+        }
+
+        .logout-btn:hover {
+            background-color: #a52a2a;
+        }
+    </style>
+
+    <h2>Inventory Listing</h2>
+    <table class="inventory-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+HTML;
+
+    while ($row = $result->fetch_assoc()) {
+        $html .= "<tr>
+                    <td>{$row['name']}</td>
+                    <td>{$row['description']}</td>
+                    <td>{$row['quantity']}</td>
+                    <td>\${$row['price']}</td>
+                  </tr>";
+    }
+
+    $html .= "</table>";
+    return $html;
+}
+
 
 }
 

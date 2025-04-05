@@ -29,9 +29,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
     $renderedContent = $inv->handleAction($_POST);
 } elseif (isset($_GET['action']) && $_GET['action'] === 'add') {
     $renderedContent = $inv->handleAction(['action' => 'add']);
+} elseif (isset($_GET['action']) && $_GET['action'] === 'delete') {
+    $renderedContent = $inv->handleAction(['action' => 'delete']);
+} elseif (isset($_GET['action']) && $_GET['action'] === 'search') {
+    $renderedContent = $inv->handleAction(['action' => 'search']);
+} elseif (isset($_GET['action']) && $_GET['action'] === 'update') {
+    $renderedContent = $inv->handleAction(['action' => 'update']);
+}elseif (isset($_GET['action']) && $_GET['action'] === 'view') {
+    $renderedContent = $inv->handleAction(['action' => 'view']);
 }
-
 $isAdding = isset($_GET['action']) && $_GET['action'] === 'add';
+$isDeleting = isset($_GET['action']) && $_GET['action'] === 'delete';
+$isSearching = isset($_GET['action']) && $_GET['action'] === 'search';
+$isUpdating = isset($_GET['action']) && $_GET['action'] === 'update';
+$isViewing = isset($_GET['action']) && $_GET['action'] === 'view';
 
 ?>
 
@@ -116,7 +127,9 @@ $isAdding = isset($_GET['action']) && $_GET['action'] === 'add';
 
     <!-- Jouture Logo -->
     <img src="../assets/images/jblogo.jpg" alt="Jouture Logo" class="logo">
-    <?php if ($isAdding): ?>
+
+    <!-- Back button for Each Use Case -->
+    <?php if ($isAdding || $isDeleting || $isSearching || $isUpdating || $isViewing): ?>
     <a href="dashboard.php" class="btn back-btn">← Back</a>
 <?php else: ?>
     <a href="?logout=true" class="btn logout-btn">Logout</a>
@@ -129,10 +142,10 @@ $isAdding = isset($_GET['action']) && $_GET['action'] === 'add';
     <p>Manage your jewelry collection with ease.</p>
     <div class="buttons">
         <a href="?action=add" class="btn">Add Item</a>
-        <a href="delete_item.php" class="btn">Delete Item</a>
-        <a href="search_item.php" class="btn">Search Item</a>
-        <a href="update_item.php" class="btn">Update Item</a>
-        <a href="view_item.php" class="btn">View Items</a>
+        <a href="?action=delete" class="btn">Delete Item</a>
+        <a href="?action=search" class="btn">Search Item</a>
+        <a href="?action=update" class="btn">Update Item</a>
+        <a href="?action=view" class="btn">View Items</a>
     </div>
 <?php endif; ?>
 </body>
